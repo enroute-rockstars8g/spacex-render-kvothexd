@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Card } from "./Cards/Cards";
 function App() {
+  const [allRockets, setAllRockets] = useState([]);
+  const [loadMore, setLoadMore] = useState(
+    "https://api.spacexdata.com/v3/rockets"
+  );
+  const getAllRockets = async () => {
+    const res = await fetch(loadMore);
+    const data = await res.json();
+
+    setLoadMore(data.next);
+
+    createRocketObject(data);
+  };
+  const createRocketObject = (result) => {
+    console.log(result);
+    result.forEach(async ({rocket_id}) => {
+      const res = await fetch(
+        `https://api.spacexdata.com/v3/rockets/${rocket_id}`
+      ).json
+      const data = res;
+
+      setAllRockets((currentlist) => [...currentlist, data]);
+    });
+  };
+
+  useEffect(() => {
+    getAllRockets();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Elondex</h1>
+    <div className="app-container">
+      {allRockets.map(()=>(
+        <Card />
+        ))}
+    </div>
     </div>
   );
 }
-
 export default App;
