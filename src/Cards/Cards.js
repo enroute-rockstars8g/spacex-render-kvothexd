@@ -2,16 +2,18 @@ import React from "react";
 import "./Card.css"
 
 
-export function Card(){
+export function Card({rocket}){
+   
     return( 
-        <div class="card">
-            <img src=""/>
+        <div className="card">
+            <img alt={rocket.rocket_name} src={rocket.flickr_images[0]} className="image" />
             <div className="container">
-                <h1 className="header">Falcon 9</h1>   
-                <p className="description">The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.</p>
+                <p className={`status ${rocket.active? "active" : "inactive"}`}>{rocket.active ? "Active" : "Inactive"}</p>
+                <h1 className="header">{rocket.rocket_name}</h1>   
+                <p className="description">{rocket.description}</p>
                 <div className="info">
-                    <h2 className="subtitle">XD</h2>
-                    <p className="engine">sfasfdasfdasdfdsaf</p>
+                    <h2 className="subtitle">Engine info:</h2>
+                    <p className="engine">Number of engines: {rocket.engines.number} | Version: {rocket.engines.version}</p>
 
                 </div>
             </div>

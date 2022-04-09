@@ -15,13 +15,9 @@ function App() {
     createRocketObject(data);
   };
   const createRocketObject = (result) => {
-    console.log(result);
     result.forEach(async ({rocket_id}) => {
-      const res = await fetch(
-        `https://api.spacexdata.com/v3/rockets/${rocket_id}`
-      ).json
-      const data = res;
-
+      const res = await fetch(`https://api.spacexdata.com/v3/rockets/${rocket_id}`)
+      const data = await res.json()
       setAllRockets((currentlist) => [...currentlist, data]);
     });
   };
@@ -32,11 +28,14 @@ function App() {
   return (
     <div>
       <h1>Elondex</h1>
-    <div className="app-container">
-      {allRockets.map(()=>(
-        <Card />
-        ))}
-    </div>
+      <div className="app-container">
+        {allRockets.map((rocket)=>(
+          <Card
+            rocket={rocket}
+            key={rocket?.rocket_id}
+          />
+          ))}
+      </div>
     </div>
   );
 }
